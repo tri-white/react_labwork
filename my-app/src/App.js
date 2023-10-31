@@ -1,6 +1,8 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import OurFirstComponent from './FirstComponent';
+import OurSecondComponent from './SecondComponent';
 function App() {
   return (
     <div className="App">
@@ -17,9 +19,11 @@ function App() {
         >
           Learn React
         </a>
+        <OurFirstComponent />
+        <OurSecondComponent />
       </header>
     </div>
   );
 }
-
+ 
 export default App;
