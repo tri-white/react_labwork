@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import InputForm from './InputComponent';
-/*
-Створити додаток на реакт згідно варіанту, в якому необхідно обов’язково використати props, state, 
-створити мінімум дві компоненти, що мають бути вкладеними.
-*/
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -19,12 +16,12 @@ class Game extends React.Component {
   checkGuess = (guess) => {
     let bulls = 0;
     let cows = 0;
-
+    let  secret = this.state.secretNumber.toString();
     for (let i = 0; i < 4; i++) {
-      if (guess[i] === this.state.secretNumber[i]) {
+      if (guess[i] === secret[i]) {
         bulls++;
       } 
-      else if (this.state.secretNumber.includes(guess[i])) {
+      else if (secret.includes(guess[i])) {
         cows++;
       }
     }
@@ -39,7 +36,7 @@ class Game extends React.Component {
 
   restartGame = () => {
     this.setState({
-      secretNumber: this.generateSecretNumber(),
+      secretNumber: Math.floor(1000 + Math.random() * 9000),
       lastResult: '',
       lastGuess: '',
       attempts: 0,
@@ -59,9 +56,11 @@ class Game extends React.Component {
           <p>
             Останнє введене число: {this.state.lastGuess}
           </p>
-        {this.state.attempts < 25 ? (
+        {this.state.attempts < 25 ? 
+        (
           <InputForm checkGuess={this.checkGuess} attempts={25-this.state.attempts} />
-        ) : (
+        ) : 
+        (
           <div>
             <p>Ви програли! Загадане число: {this.state.secretNumber}</p>
             <button className="btn btn-primary" onClick={this.restartGame}>
