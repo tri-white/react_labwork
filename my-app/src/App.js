@@ -19,8 +19,8 @@ function App() {
         >
           Learn React
         </a>
-        <OurFirstComponent />
-        <OurSecondComponent />
+        <OurFirstComponent name="студєнтік" data="перший твій компонєнт"/>
+        <OurSecondComponent name="випускник" novanazvapropsa="класовий компонент"/>
       </header>
     </div>
   );

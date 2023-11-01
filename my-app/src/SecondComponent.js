@@ -1,9 +1,17 @@
 import React from 'react';
  
 class OurSecondComponent extends React.Component {
-    render() {
-      return <h1>Hello, I am a Second React Component!</h1>;
-    }
+  constructor(props) {
+    super(props)
+}
+
+  render() {
+    return <h1>
+              <p>Привіт: {this.props.name}</p>
+              <p>Вітає тебе - {this.props.novanazvapropsa}!</p>
+          </h1>;
   }
+}
+
   
 export default OurSecondComponent;
