@@ -6,12 +6,12 @@ class Game extends Component {
     this.state = {
       secretNumber: this.generateSecretNumber(),
       lastResult: '',
+      lastGuess: '',
       attempts: 0,
     };
   }
 
   generateSecretNumber() {
-    // Генеруємо випадкове 4-значне число
     const digits = '0123456789';
     let secret = '';
     while (secret.length < 4) {
@@ -39,6 +39,7 @@ class Game extends Component {
     const result = `${bulls}-бик і ${cows}-корови`;
     this.setState({
       lastResult: result,
+      lastGuess: guess,
       attempts: this.state.attempts + 1,
     });
   };
@@ -47,22 +48,28 @@ class Game extends Component {
     this.setState({
       secretNumber: this.generateSecretNumber(),
       lastResult: '',
+      lastGuess: '',
       attempts: 0,
     });
   };
 
   render() {
     return (
-      <div>
-        <h1>Гра "Бики-корови"</h1>
-        <p>Спроб: {this.state.attempts}</p>
+      <div className="container mt-5">
+        <h1 className="display-4">Гра "Бики-корови"</h1>
+        <p className="lead">Спроб: {this.state.attempts}</p>
         <p>Останній результат: {this.state.lastResult}</p>
+        {this.state.lastGuess && (
+          <p>Останнє введене число: {this.state.lastGuess}</p>
+        )}
         {this.state.attempts < 10 ? (
           <InputForm checkGuess={this.checkGuess} />
         ) : (
           <div>
             <p>Ви програли! Загадане число: {this.state.secretNumber}</p>
-            <button onClick={this.restartGame}>Розпочати нову гру</button>
+            <button className="btn btn-primary" onClick={this.restartGame}>
+              Розпочати нову гру
+            </button>
           </div>
         )}
       </div>
@@ -87,12 +94,15 @@ function InputForm({ checkGuess }) {
     <form onSubmit={handleGuessSubmit}>
       <input
         type="text"
+        className="form-control"
         value={guess}
         onChange={handleGuessChange}
         placeholder="Введіть число"
         maxLength="4"
       />
-      <button type="submit">Перевірити</button>
+      <button type="submit" className="btn btn-success">
+        Перевірити
+      </button>
     </form>
   );
 }
