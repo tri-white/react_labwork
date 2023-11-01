@@ -1,37 +1,30 @@
-import React, { Component, useState, useEffect } from 'react';
-
-class Game extends Component {
+import React, { useState } from 'react';
+import InputForm from './InputComponent';
+/*
+Створити додаток на реакт згідно варіанту, в якому необхідно обов’язково використати props, state, 
+створити мінімум дві компоненти, що мають бути вкладеними.
+*/
+class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      secretNumber: this.generateSecretNumber(),
+      secretNumber: Math.floor(1000 + Math.random() * 9000),
       lastResult: '',
       lastGuess: '',
       attempts: 0,
     };
   }
 
-  generateSecretNumber() {
-    const digits = '0123456789';
-    let secret = '';
-    while (secret.length < 4) {
-      const digit = digits[Math.floor(Math.random() * 10)];
-      if (!secret.includes(digit)) {
-        secret += digit;
-      }
-    }
-    return secret;
-  }
 
   checkGuess = (guess) => {
-    const secretNumber = this.state.secretNumber;
     let bulls = 0;
     let cows = 0;
 
     for (let i = 0; i < 4; i++) {
-      if (guess[i] === secretNumber[i]) {
+      if (guess[i] === this.state.secretNumber[i]) {
         bulls++;
-      } else if (secretNumber.includes(guess[i])) {
+      } 
+      else if (this.state.secretNumber.includes(guess[i])) {
         cows++;
       }
     }
@@ -56,14 +49,18 @@ class Game extends Component {
   render() {
     return (
       <div className="container mt-5">
-        <h1 className="display-4">Гра "Бики-корови"</h1>
-        <p className="lead">Спроб: {this.state.attempts}</p>
-        <p>Останній результат: {this.state.lastResult}</p>
-        {this.state.lastGuess && (
-          <p>Останнє введене число: {this.state.lastGuess}</p>
-        )}
-        {this.state.attempts < 10 ? (
-          <InputForm checkGuess={this.checkGuess} />
+        <h1 className="display-4">
+            Гра "Бики-корови"
+        </h1>
+        
+        <p>
+            Останній результат: {this.state.lastResult}
+        </p>
+          <p>
+            Останнє введене число: {this.state.lastGuess}
+          </p>
+        {this.state.attempts < 25 ? (
+          <InputForm checkGuess={this.checkGuess} attempts={25-this.state.attempts} />
         ) : (
           <div>
             <p>Ви програли! Загадане число: {this.state.secretNumber}</p>
@@ -77,34 +74,5 @@ class Game extends Component {
   }
 }
 
-function InputForm({ checkGuess }) {
-  const [guess, setGuess] = useState('');
-
-  const handleGuessChange = (e) => {
-    setGuess(e.target.value);
-  };
-
-  const handleGuessSubmit = (e) => {
-    e.preventDefault();
-    checkGuess(guess);
-    setGuess('');
-  };
-
-  return (
-    <form onSubmit={handleGuessSubmit}>
-      <input
-        type="text"
-        className="form-control"
-        value={guess}
-        onChange={handleGuessChange}
-        placeholder="Введіть число"
-        maxLength="4"
-      />
-      <button type="submit" className="btn btn-success">
-        Перевірити
-      </button>
-    </form>
-  );
-}
 
 export default Game;
