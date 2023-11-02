@@ -5,13 +5,25 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      secretNumber: Math.floor(1000 + Math.random() * 9000),
+      secretNumber: this.random4Digits(),
       lastResult: '',
       lastGuess: '',
       attempts: 0,
     };
   }
 
+  random4Digits = () => {
+    let res = '';
+    let digits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  
+    for (let i = 0; i < 4; i++) {
+      const randomIndex = Math.floor(Math.random() * digits.length);
+      const randomDigit = digits.splice(randomIndex, 1)[0];
+      res += randomDigit;
+    }
+  
+    return res;
+  }
 
   checkGuess = (guess) => {
     let bulls = 0;
@@ -36,7 +48,7 @@ class Game extends React.Component {
 
   restartGame = () => {
     this.setState({
-      secretNumber: Math.floor(1000 + Math.random() * 9000),
+      secretNumber: this.random4Digits(),
       lastResult: '',
       lastGuess: '',
       attempts: 0,
@@ -46,29 +58,33 @@ class Game extends React.Component {
   render() {
     return (
       <div className="container mt-5">
-        <h1 className="display-4">
-            Гра "Бики-корови"
-        </h1>
-        
-        <p>
-            Останній результат: {this.state.lastResult}
-        </p>
-          <p>
-            Останнє введене число: {this.state.lastGuess}
-          </p>
-        {this.state.attempts < 25 ? 
-        (
-          <InputForm checkGuess={this.checkGuess} attempts={25-this.state.attempts} />
-        ) : 
-        (
-          <div>
-            <p>Ви програли! Загадане число: {this.state.secretNumber}</p>
-            <button className="btn btn-primary" onClick={this.restartGame}>
-              Розпочати нову гру
-            </button>
-          </div>
-        )}
-      </div>
+  <h1 className="display-4">Гра "Бики-корови"</h1>
+  <p>Останній результат: {this.state.lastResult}</p>
+  <p>Останнє введене число: {this.state.lastGuess}</p>
+
+  {this.state.attempts < 25 ? (
+    <InputForm checkGuess={this.checkGuess} attempts={25 - this.state.attempts} />
+  ) : (
+    <>
+      {this.state.lastGuess === this.state.secretNumber ? (
+        <div>
+          <p>Ви виграли!</p>
+          <button className="btn btn-primary" onClick={this.restartGame}>
+            Розпочати нову гру
+          </button>
+        </div>
+      ) : (
+        <div>
+          <p>Ви програли! Загадане число: {this.state.secretNumber}</p>
+          <button className="btn btn-primary" onClick={this.restartGame}>
+            Розпочати нову гру
+          </button>
+        </div>
+      )}
+    </>
+  )}
+</div>
+
     );
   }
 }
